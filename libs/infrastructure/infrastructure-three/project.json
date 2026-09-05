@@ -1,0 +1,13 @@
+{
+  "name": "infrastructure-three",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/infrastructure/infrastructure-three/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["type:infrastructure"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

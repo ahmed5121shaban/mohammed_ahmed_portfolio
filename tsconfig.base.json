@@ -17,7 +17,13 @@
     "paths": {
       "@kola-profile/shared-util": ["./libs/shared/shared-util/src/index.ts"],
       "@kola-profile/domain": ["./libs/domain/src/index.ts"],
-      "@kola-profile/application": ["./libs/application/src/index.ts"]
+      "@kola-profile/application": ["./libs/application/src/index.ts"],
+      "@kola-profile/infrastructure-data": [
+        "./libs/infrastructure/infrastructure-data/src/index.ts"
+      ],
+      "@kola-profile/infrastructure-three": [
+        "./libs/infrastructure/infrastructure-three/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

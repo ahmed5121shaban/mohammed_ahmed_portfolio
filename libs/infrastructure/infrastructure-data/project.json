@@ -1,0 +1,13 @@
+{
+  "name": "infrastructure-data",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/infrastructure/infrastructure-data/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["type:infrastructure"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
