@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+// Palette/typography/density are deferred to a later plan — this is the
+// wiring point where the final theme config will be supplied.
+html {
+  @include mat.theme((
+    color: mat.$violet-palette,
+    typography: Roboto,
+    density: 0,
+  ));
+}
