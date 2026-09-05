@@ -26,6 +26,9 @@
       ],
       "@kola-profile/presentation-ui": [
         "./libs/presentation/presentation-ui/src/index.ts"
+      ],
+      "@kola-profile/presentation-features": [
+        "./libs/presentation/presentation-features/src/index.ts"
       ]
     }
   },

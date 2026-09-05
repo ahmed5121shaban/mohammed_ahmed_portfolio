@@ -1,0 +1,13 @@
+{
+  "name": "presentation-features",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/presentation/presentation-features/src",
+  "prefix": "app",
+  "projectType": "library",
+  "tags": ["type:presentation"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
