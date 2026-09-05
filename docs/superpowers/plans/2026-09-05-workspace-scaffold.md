@@ -55,12 +55,12 @@ If the CLI rejects a flag (Nx flags shift between releases), run `npx create-nx-
 
 - [ ] **Step 2: Move the generated workspace into the target directory**
 
-The generator created `/c/Users/Ashaaban/Projects/kola-profile/` (hyphen). Move its contents — including the hidden `.git` folder — into the existing empty `kola_profile` (underscore) project root, then remove the now-empty generated folder:
+The generator created `/c/Users/Ashaaban/Projects/kola-profile/` (hyphen). The target `kola_profile` (underscore) already has its own git repo (initialized on `main` with an initial commit containing `docs/`) — do **not** copy the generated folder's `.git`, only its tracked files:
 
 ```bash
 cd "/c/Users/Ashaaban/Projects/kola-profile"
+rm -rf .git
 cp -r . "/c/Users/Ashaaban/Projects/kola_profile/"
-cp -r .git "/c/Users/Ashaaban/Projects/kola_profile/" 2>/dev/null || true
 cd "/c/Users/Ashaaban/Projects"
 rm -rf kola-profile
 cd "/c/Users/Ashaaban/Projects/kola_profile"
