@@ -14,14 +14,14 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="pf-marquee-track" style="direction: ltr;">
-      <div class="pf-marquee-row" aria-hidden="false" style="direction: ltr;">
+    <div class="pf-marquee-track">
+      <div class="pf-marquee-row" aria-hidden="false">
         @for (item of items; track $index) {
           <span>{{ item }}</span>
           <span class="pf-marquee-dot">◼</span>
         }
       </div>
-      <div class="pf-marquee-row" aria-hidden="true" style="direction: ltr;">
+      <div class="pf-marquee-row" aria-hidden="true">
         @for (item of items; track $index) {
           <span>{{ item }}</span>
           <span class="pf-marquee-dot">◼</span>
