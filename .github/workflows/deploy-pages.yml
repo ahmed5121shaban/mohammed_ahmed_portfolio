@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Allows manually triggering a deploy from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time; cancel any in-progress run if a new push lands.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # User sites (<username>.github.io) serve at the domain root ("/");
+      # project sites (any other repo name) serve at "/<repo-name>/".
+      # This picks the right base-href automatically either way.
+      - name: Compute base href
+        id: base-href
+        run: |
+          if [[ "${{ github.event.repository.name }}" == *.github.io ]]; then
+            echo "value=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=/${{ github.event.repository.name }}/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build (static browser output only)
+        run: npx nx build portfolio --configuration=production --base-href="${{ steps.base-href.outputs.value }}"
+
+      # GitHub Pages otherwise runs the output through Jekyll, which
+      # ignores files/folders starting with "_" — Angular's build doesn't
+      # produce any, but this is the standard safety net for Angular/Pages.
+      - name: Disable Jekyll processing
+        run: touch dist/apps/portfolio/browser/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/apps/portfolio/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
