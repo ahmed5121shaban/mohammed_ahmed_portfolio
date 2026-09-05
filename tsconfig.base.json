@@ -23,6 +23,9 @@
       ],
       "@kola-profile/infrastructure-three": [
         "./libs/infrastructure/infrastructure-three/src/index.ts"
+      ],
+      "@kola-profile/presentation-ui": [
+        "./libs/presentation/presentation-ui/src/index.ts"
       ]
     }
   },
