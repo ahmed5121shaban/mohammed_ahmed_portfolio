@@ -1,0 +1,388 @@
+@let p = profile();
+
+<pf-progress-bar />
+<pf-cursor-follower />
+
+@if (showIntroCurtain()) {
+  <div class="pf-intro-curtain" [class.pf-intro-curtain--hide]="introCurtainHiding()">
+    <div class="pf-intro-curtain__kicker">{{ p.hero.location }}</div>
+    <div class="pf-intro-curtain__name">{{ p.hero.name }}</div>
+  </div>
+}
+
+<nav class="pf-rail" data-noprint [class.pf-rail--visible]="showRail()">
+  @for (link of railLinks(); track link.title) {
+    <button type="button" class="pf-rail__link" [class.pf-rail__link--active]="link.active" (click)="scrollToSection(link.el)">
+      <span class="pf-rail__dash"></span>
+      <span>{{ link.title }}</span>
+    </button>
+  }
+</nav>
+
+<header class="pf-header">
+  <div class="pf-header__brand">{{ p.header.brand }}</div>
+  <div class="pf-header__meta">{{ p.header.meta }}</div>
+</header>
+
+<section class="pf-hero" data-sec="intro" data-label="Hero">
+  <div class="pf-container">
+    <div class="pf-hero__top">
+      <div class="pf-hero__intro">
+        <div class="pf-hero__mask-wrap">
+          <div #maskLine class="pf-hero__name">{{ p.hero.name }}</div>
+        </div>
+        <div #growRule class="pf-hero__rule"></div>
+        <div class="pf-hero__titles">
+          @for (title of p.hero.titles; track title) {
+            <div class="pf-hero__mask-wrap">
+              <div #maskLine class="pf-hero__title">{{ title }}</div>
+            </div>
+          }
+        </div>
+        <div class="pf-hero__actions" pfReveal>
+          @for (link of p.hero.contactLinks; track link.href) {
+            <a
+              class="btn"
+              [class.btn-primary]="link.kind === 'whatsapp'"
+              [class.btn-ghost]="link.kind !== 'whatsapp'"
+              [href]="link.href"
+              target="_blank"
+              rel="noopener"
+              data-hover
+              >{{ link.label }}</a
+            >
+          }
+          <button type="button" class="btn btn-secondary" data-print data-hover (click)="printResume()">
+            تحميل السيرة الذاتية PDF
+          </button>
+        </div>
+      </div>
+      <figure class="pf-hero__figure" pfReveal [pfRevealIndex]="1">
+        <pf-photo-spotlight [src]="'assets/portrait.jpg'" [alt]="p.hero.photoAlt" />
+        <figcaption class="pf-hero__caption">{{ p.hero.photoCaption }}</figcaption>
+      </figure>
+    </div>
+    <div class="pf-hero__stats">
+      @for (stat of p.hero.stats; track stat.label; let i = $index) {
+        <div class="pf-hero__stat" pfReveal [pfRevealIndex]="i">
+          <div class="pf-hero__stat-number" [class.pf-hero__stat-number--accent]="stat.accent">
+            <pf-counter [target]="stat.count" [pad]="!!stat.pad" />
+          </div>
+          <div class="pf-hero__stat-label">{{ stat.label }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<pf-marquee data-noprint [items]="p.marquee" />
+
+<section class="pf-section" data-noprint appSectionAnchor="الملخص">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">01</div>
+      <h2>الملخص المهني</h2>
+    </div>
+    <div class="pf-section__body pf-section__body--prose">
+      @for (paragraph of p.summary; track paragraph; let i = $index) {
+        <p pfReveal [pfRevealIndex]="i">{{ paragraph }}</p>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="الخبرة">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">02</div>
+      <h2>الخبرة المهنية</h2>
+    </div>
+    <div class="pf-section__body pf-timeline">
+      @for (job of p.experience; track job.org; let i = $index) {
+        <div class="pf-timeline__entry" pfReveal [pfRevealIndex]="i">
+          <span class="pf-timeline__dot" [class.pf-timeline__dot--accent]="i === 0"></span>
+          <h3 class="pf-timeline__title">{{ job.role }} <span class="pf-timeline__sep">|</span> {{ job.org }}</h3>
+          <p class="pf-timeline__meta">{{ job.place }} <span class="pf-accent-slash">/</span> {{ job.period }}</p>
+          <ul class="pf-list">
+            @for (bullet of job.bullets; track bullet) {
+              <li>{{ bullet }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="المبادرات">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">03</div>
+      <h2>ريادة الأعمال والمشروعات والمبادرات المجتمعية</h2>
+      <p class="pf-section__subtitle">مؤسس</p>
+    </div>
+    <div class="pf-section__body">
+      <p class="pf-lead" pfReveal>{{ p.ventures.intro }}</p>
+      <div class="pf-venture-grid">
+        @for (card of p.ventures.cards; track card.title; let i = $index) {
+          <div class="pf-venture-card" pfReveal [pfRevealIndex]="i">
+            <div class="pf-kicker">{{ card.kicker }}</div>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.description }}</p>
+          </div>
+        }
+      </div>
+      <ul class="pf-list pf-list--wide" pfReveal [pfRevealIndex]="1">
+        @for (bullet of p.ventures.bullets; track bullet) {
+          <li>{{ bullet }}</li>
+        }
+      </ul>
+      <div class="pf-recognition" pfReveal [pfRevealIndex]="2">
+        <div class="pf-kicker pf-kicker--on-accent">{{ p.ventures.recognition.kicker }}</div>
+        <div class="pf-recognition__title">{{ p.ventures.recognition.title }}</div>
+        <div class="pf-recognition__subtitle">{{ p.ventures.recognition.subtitle }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="التطوع">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">04</div>
+      <h2>الخبرات القيادية والتطوعية</h2>
+    </div>
+    <div class="pf-section__body pf-timeline">
+      @for (entry of p.volunteer.entries; track entry.role; let i = $index) {
+        <div class="pf-timeline__entry" pfReveal [pfRevealIndex]="i">
+          <span class="pf-timeline__dot" [class.pf-timeline__dot--accent]="i === 0"></span>
+          <h3 class="pf-timeline__title">{{ entry.role }} <span class="pf-timeline__sep">|</span> {{ entry.org }}</h3>
+          @if (entry.place || entry.period) {
+            <p class="pf-timeline__meta">
+              {{ entry.place }}
+              @if (entry.place && entry.period) {
+                <span class="pf-accent-slash">/</span>
+              }
+              {{ entry.period }}
+            </p>
+          }
+          @if (entry.bullets) {
+            <ul class="pf-list">
+              @for (bullet of entry.bullets; track bullet) {
+                <li>{{ bullet }}</li>
+              }
+            </ul>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="المناصب">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">05</div>
+      <h2>المناصب القيادية والمجتمعية</h2>
+    </div>
+    <div class="pf-section__body pf-timeline">
+      @for (entry of p.roles; track entry.role; let i = $index) {
+        <div class="pf-timeline__entry" pfReveal [pfRevealIndex]="i">
+          <span class="pf-timeline__dot" [class.pf-timeline__dot--accent]="i === 0"></span>
+          <h3 class="pf-timeline__title">{{ entry.role }} <span class="pf-timeline__sep">|</span> {{ entry.org }}</h3>
+          @if (entry.place || entry.period) {
+            <p class="pf-timeline__meta">{{ entry.place }}{{ entry.period }}</p>
+          }
+          @if (entry.bullets) {
+            <ul class="pf-list">
+              @for (bullet of entry.bullets; track bullet) {
+                <li>{{ bullet }}</li>
+              }
+            </ul>
+          }
+        </div>
+      }
+      <div class="pf-additional-note" pfReveal [pfRevealIndex]="3">
+        <h4>{{ p.additionalRoleNote.title }}</h4>
+        <div class="pf-additional-note__grid">
+          @for (item of p.additionalRoleNote.items; track item.org) {
+            <div class="pf-additional-note__item">
+              <div class="pf-kicker">{{ item.year }}</div>
+              <div class="pf-additional-note__org">{{ item.org }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="النطاق">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">06</div>
+      <h2>نطاق العمل الميداني</h2>
+      <p class="pf-section__subtitle pf-section__subtitle--muted">{{ p.scope.intro }}</p>
+    </div>
+    <div class="pf-scope">
+      <div class="pf-scope__buttons">
+        @for (region of p.scope.regions; track region.key; let last = $last) {
+          <button
+            type="button"
+            class="pf-scope__btn"
+            (click)="setRegion(region.key)"
+            (mouseenter)="setRegion(region.key)"
+            data-hover
+          >
+            <span class="pf-scope__dot" [class.pf-scope__dot--active]="activeRegion() === region.key"></span>
+            <span class="pf-scope__label" [class.pf-scope__label--active]="activeRegion() === region.key">{{ region.label }}</span>
+          </button>
+          @if (!last) {
+            <div class="pf-scope__rung"></div>
+          }
+        }
+      </div>
+      <div class="pf-scope__panel">
+        @for (region of p.scope.regions; track region.key) {
+          @if (activeRegion() === region.key) {
+            <div>
+              <div class="pf-kicker">{{ region.code }}</div>
+              <ul class="pf-list">
+                @for (item of region.items; track item.label) {
+                  <li>{{ item.label }}</li>
+                }
+              </ul>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="التعليم">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">07</div>
+      <h2>التعليم</h2>
+    </div>
+    <div class="pf-section__body pf-timeline pf-timeline--flush">
+      @for (edu of p.education; track edu.title; let i = $index) {
+        <div [class.pf-timeline__entry--ruled]="i > 0" pfReveal [pfRevealIndex]="i">
+          <h3 class="pf-timeline__title">{{ edu.title }}</h3>
+          <p class="pf-timeline__meta">{{ edu.org }} <span class="pf-accent-slash">/</span> {{ edu.period }}</p>
+          @if (edu.bullets) {
+            <ul class="pf-list">
+              @for (bullet of edu.bullets; track bullet) {
+                <li>{{ bullet }}</li>
+              }
+            </ul>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="الشهادات">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">08</div>
+      <h2>الشهادات والدورات التدريبية</h2>
+      <div class="pf-section__big-number"><pf-counter [target]="16" /></div>
+    </div>
+    <div class="pf-section__body">
+      <div class="pf-chip-row" data-noprint>
+        <button
+          type="button"
+          class="btn btn-secondary pf-chip"
+          [class.pf-chip--active]="activeCertFilter() === 'all'"
+          (click)="setCertFilter('all')"
+        >
+          الكل
+        </button>
+        @for (year of p.certificateYears; track year) {
+          <button
+            type="button"
+            class="btn btn-secondary pf-chip"
+            [class.pf-chip--active]="activeCertFilter() === year"
+            (click)="setCertFilter(year)"
+          >
+            {{ year }}
+          </button>
+        }
+      </div>
+      <div class="pf-cert-grid">
+        @for (cert of p.certificates; track cert.title) {
+          <div class="pf-cert-card" [style.display]="certVisible(cert.filterYear) ? 'flex' : 'none'">
+            <div class="pf-kicker">
+              {{ cert.year }}
+              @if (cert.yearSuffix) {
+                <span class="pf-cert-card__suffix">· {{ cert.yearSuffix }}</span>
+              }
+            </div>
+            <div class="pf-cert-card__title">{{ cert.title }}</div>
+            @if (cert.org) {
+              <div class="pf-cert-card__org">{{ cert.org }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pf-section pf-section--ruled" appSectionAnchor="المهارات">
+  <div class="pf-container pf-section__grid">
+    <div class="pf-section__heading">
+      <div class="pf-section__index">09</div>
+      <h2>المهارات المهنية</h2>
+    </div>
+    <div class="pf-skills-grid">
+      @for (group of p.skills; track group.title) {
+        <div class="pf-skill-group" pfReveal>
+          <div class="pf-kicker">{{ group.index }}</div>
+          <h4>{{ group.title }}</h4>
+          <ul class="pf-list">
+            @for (item of group.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="pf-contact pf-section--ruled" appSectionAnchor="تواصل">
+  <div class="pf-container">
+    <div class="pf-kicker pf-kicker--on-accent">{{ p.contact.kicker }}</div>
+    <h2 class="pf-contact__headline">{{ p.contact.headline }}</h2>
+    <div class="pf-contact__row">
+      @for (link of p.contact.links; track link.href) {
+        <a
+          [href]="link.href"
+          target="_blank"
+          rel="noopener"
+          class="pf-contact__link"
+          [class.pf-contact__link--big]="link.kind === 'whatsapp'"
+          data-hover
+        >
+          @if (link.kind === 'whatsapp') {
+            <bdi dir="ltr">{{ link.label }}</bdi>
+          } @else {
+            {{ link.label }}
+          }
+        </a>
+      }
+      <button type="button" class="btn pf-contact__print" data-print data-noprint (click)="printResume()">
+        تحميل السيرة الذاتية PDF
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer class="pf-footer">
+  <div>{{ p.footer.left }}</div>
+  <div>{{ p.footer.right }}</div>
+</footer>

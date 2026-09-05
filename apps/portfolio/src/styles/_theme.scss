@@ -1,11 +1,45 @@
 @use '@angular/material' as mat;
 
-// Palette/typography/density are deferred to a later plan — this is the
-// wiring point where the final theme config will be supplied.
+// Angular Material's own theme wiring — kept for any Material component a
+// future plan might add. This page's actual visuals come entirely from the
+// design tokens below, ported 1:1 from the reference design.
 html {
   @include mat.theme((
     color: mat.$violet-palette,
     typography: Roboto,
     density: 0,
   ));
+}
+
+:root {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201e1d;
+  --color-accent: #ec3013;
+  --color-accent-2: #e15b47;
+  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+
+  --color-neutral-100: #f8f4f4;
+  --color-neutral-200: #eae7e7;
+  --color-neutral-300: #d7d3d3;
+  --color-neutral-400: #bab6b6;
+  --color-neutral-500: #9b9797;
+  --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d;
+  --color-neutral-800: #444141;
+  --color-neutral-900: #2d2b2b;
+
+  --color-accent-100: #fff2ef;
+  --color-accent-200: #ffe0d9;
+  --color-accent-300: #ffc4b8;
+  --color-accent-400: #ff9783;
+  --color-accent-500: #ff563c;
+  --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800;
+  --color-accent-800: #7c1405;
+  --color-accent-900: #4d170e;
+
+  --font-heading: 'Noto Kufi Arabic', 'Archivo', sans-serif;
+  --font-body: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-latin: 'Archivo', sans-serif;
 }

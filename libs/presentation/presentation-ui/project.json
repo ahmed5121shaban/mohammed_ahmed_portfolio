@@ -2,7 +2,7 @@
   "name": "presentation-ui",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/presentation/presentation-ui/src",
-  "prefix": "lib",
+  "prefix": "pf",
   "projectType": "library",
   "tags": ["type:presentation"],
   "targets": {

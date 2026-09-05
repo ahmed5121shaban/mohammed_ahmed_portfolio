@@ -35,6 +35,10 @@ export default [
             {
               sourceTag: 'type:presentation',
               onlyDependOnLibsWithTags: [
+                // Same-layer: feature libs (presentation-features) compose
+                // reusable UI atoms (presentation-ui) — normal intra-layer
+                // composition, not a boundary violation.
+                'type:presentation',
                 'type:application',
                 'type:domain',
                 'type:shared',

@@ -1,3 +1,3 @@
-// Use-cases/services orchestrating domain via injected interfaces.
-// Signal-based state lives here. Populated in a later plan.
-export {};
+// Use-cases and Signal-based application state.
+export * from './lib/profile-content-repository.token';
+export * from './lib/profile.facade';
